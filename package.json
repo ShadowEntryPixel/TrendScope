@@ -1,0 +1,17 @@
+
+{
+  "name": "trendscope",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.35.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "vercel": "^48.0.0"
+  }
+}
