@@ -1,53 +1,37 @@
 const {
-  send,
-  allowMethod,
-  getData,
-  getStatus,
-  calculateTrends,
-  getQuery
+  fetchNewsData,
+  sendJson,
+  errorMessage
 } = require("./_lib");
 
 module.exports = async function handler(req, res) {
-  if (!allowMethod(req, res)) return;
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return sendJson(res, 405, {
+      ok: false,
+      error: "GET 요청만 지원합니다."
+    });
+  }
 
   try {
-    const [data, status] = await Promise.all([
-      getData(),
-      getStatus()
-    ]);
+    const data = await fetchNewsData();
 
-    const q = getQuery(req, "q").toLowerCase();
-    const category = getQuery(req, "category");
-
-    let trends = calculateTrends(data.articles);
-
-    if (q) {
-      trends = trends.filter((item) =>
-        item.name.toLowerCase().includes(q) ||
-        item.category.toLowerCase().includes(q)
-      );
+    if (!data.ok) {
+      return sendJson(res, 502, {
+        ...data,
+        error: data.message || "뉴스 수집에 실패했습니다."
+      });
     }
 
-    if (category && category !== "전체") {
-      trends = trends.filter((item) => item.category === category);
-    }
-
-    return send(res, 200, {
-      ok: true,
-      updatedAt: data.updatedAt,
-      articleCount: data.articles.length,
-      feeds: data.feeds,
-      status,
-      trends
-    });
+    return sendJson(res, 200, data);
   } catch (error) {
     console.error("TrendScope trends error:", error);
 
-    return send(res, 500, {
-      error: "유행 데이터를 불러오지 못했습니다.",
-      detail: process.env.NODE_ENV === "development"
-        ? String(error.message || error)
-        : undefined
+    return sendJson(res, 502, {
+      ok: false,
+      error: errorMessage(error),
+      trends: [],
+      articles: []
     });
   }
 };
