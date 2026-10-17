@@ -1,17 +1,16 @@
-
 {
   "name": "trendscope",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "description": "자동 뉴스 수집 기반 유행 분석기",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "start": "vercel dev"
   },
   "dependencies": {
-    "@upstash/redis": "^1.35.0",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
-    "vercel": "^48.0.0"
+    "vercel": "^39.2.0"
   }
 }
