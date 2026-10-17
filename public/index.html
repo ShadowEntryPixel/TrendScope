@@ -4,618 +4,1009 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f7fb">
-  <meta name="description" content="뉴스 데이터를 바탕으로 요즘 주목받는 물건과 키워드를 분석하는 TrendScope입니다.">
-  <title>TrendScope — 유행 분석기</title>
 
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <meta
+    name="description"
+    content="뉴스 데이터를 분석해 주목받는 상품과 유행 키워드를 살펴보는 TrendScope"
+  >
+
+  <title>TrendScope — 유행 분석 연구소</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+  >
 
   <style>
     :root {
       color-scheme: light;
+
       --bg: #f4f6fb;
-      --surface: rgba(255,255,255,.68);
-      --surface-strong: rgba(255,255,255,.88);
+      --surface: rgba(255, 255, 255, .72);
+      --surface-solid: #fff;
       --text: #171923;
-      --muted: #777d90;
-      --line: rgba(120,130,160,.16);
-      --accent: #5c65e8;
-      --accent-soft: rgba(92,101,232,.11);
-      --green: #18886c;
-      --shadow: 0 14px 42px rgba(34,45,88,.07);
-      --radius: 24px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at 5% 0%, rgba(139,165,255,.24), transparent 34%),
-        radial-gradient(ellipse at 95% 15%, rgba(169,139,255,.17), transparent 30%),
-        var(--bg);
-      font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
-      transition: background .2s, color .2s;
+      --muted: #737b8d;
+      --line: rgba(36, 48, 76, .09);
+      --accent: #5577f5;
+      --accent-soft: rgba(85, 119, 245, .12);
+      --green: #159b78;
+      --red: #df5b65;
+      --shadow: 0 18px 55px rgba(40, 52, 91, .08);
+      --radius: 26px;
     }
 
     body.dark {
       color-scheme: dark;
+
       --bg: #10121a;
-      --surface: rgba(30,33,47,.72);
-      --surface-strong: rgba(34,37,53,.94);
-      --text: #f2f3fb;
-      --muted: #a2a8bc;
-      --line: rgba(210,215,255,.12);
-      --accent: #a4a9ff;
-      --accent-soft: rgba(164,169,255,.13);
-      --green: #71d9b7;
-      --shadow: 0 14px 42px rgba(0,0,0,.2);
-      background:
-        radial-gradient(ellipse at 5% 0%, rgba(78,90,180,.22), transparent 34%),
-        radial-gradient(ellipse at 95% 15%, rgba(103,69,150,.16), transparent 30%),
-        var(--bg);
+      --surface: rgba(31, 35, 49, .76);
+      --surface-solid: #202433;
+      --text: #f1f3fa;
+      --muted: #a1a8bb;
+      --line: rgba(255, 255, 255, .09);
+      --accent: #8ca3ff;
+      --accent-soft: rgba(140, 163, 255, .15);
+      --green: #5ed8b0;
+      --red: #ff8791;
+      --shadow: 0 18px 55px rgba(0, 0, 0, .2);
     }
 
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
+    * {
+      box-sizing: border-box;
+    }
 
-    button:focus-visible, input:focus-visible, select:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 3px;
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(116, 150, 255, .15), transparent 38%),
+        radial-gradient(ellipse at 90% 20%, rgba(147, 111, 255, .1), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background .25s, color .25s;
+      min-height: 100vh;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      max-width: 1240px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
     }
 
     .glass {
       background: var(--surface);
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, .65);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(24px) saturate(150%);
-      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      backdrop-filter: blur(26px) saturate(155%);
+      -webkit-backdrop-filter: blur(26px) saturate(155%);
     }
 
-    .shell { width: min(1180px, calc(100% - 32px)); margin: auto; }
+    body.dark .glass {
+      border-color: rgba(255, 255, 255, .07);
+    }
 
-    header {
-      position: sticky;
-      top: 12px;
-      z-index: 5;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      gap: 16px;
+    }
+
+    .brand {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin: 12px auto 28px;
-      padding: 14px 18px;
-      border-radius: 22px;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -.8px;
     }
 
-    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
-
-    .brand-mark {
+    .brand-icon {
       display: grid;
       place-items: center;
-      flex-shrink: 0;
-      width: 42px;
-      height: 42px;
+      width: 43px;
+      height: 43px;
       border-radius: 15px;
+      background: linear-gradient(135deg, #7290ff, #9b83ff);
       color: white;
-      background: linear-gradient(145deg, #7c85ff, #5358d7);
-      box-shadow: 0 7px 20px rgba(92,101,232,.25);
+      box-shadow: 0 8px 22px rgba(92, 119, 245, .27);
       font-size: 20px;
     }
 
-    .brand h1 { margin: 0; font-size: 17px; letter-spacing: -.5px; }
-    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .2px;
+      margin-top: 3px;
+    }
 
-    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .top-actions {
+      display: flex;
+      gap: 9px;
+    }
 
-    .icon-button, .secondary-button, .primary-button {
-      border: 1px solid var(--line);
-      border-radius: 13px;
+    .icon-button {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
       color: var(--text);
-      background: var(--surface-strong);
-      padding: 10px 13px;
-      transition: transform .15s, opacity .15s, background .15s;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      font-size: 18px;
     }
 
-    .icon-button { width: 42px; height: 42px; padding: 0; }
-    .icon-button:hover, .secondary-button:hover, .primary-button:hover { transform: translateY(-1px); }
-
-    .primary-button {
-      color: white;
-      border-color: transparent;
-      background: linear-gradient(135deg, #747df6, #555bd8);
-      font-weight: 700;
+    .icon-button:hover {
+      background: var(--accent-soft);
     }
-
-    .dark .primary-button { color: #141529; background: linear-gradient(135deg, #b1b5ff, #8f96ff); }
-
-    main { padding-bottom: 50px; }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(240px, .8fr);
-      gap: 22px;
-      align-items: stretch;
-      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: 54px;
+      margin: 14px 0 22px;
     }
 
-    .hero-copy, .hero-side, .panel, .stat-card {
-      border-radius: var(--radius);
-      padding: 25px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 310px;
+      height: 310px;
+      right: -80px;
+      top: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(116, 142, 255, .3), transparent 70%);
+      pointer-events: none;
     }
 
     .eyebrow {
       display: inline-flex;
-      gap: 7px;
       align-items: center;
+      gap: 8px;
       color: var(--accent);
-      font-weight: 750;
-      font-size: 12px;
-      letter-spacing: .4px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
-    .hero h2 {
-      margin: 14px 0 12px;
-      max-width: 640px;
-      font-size: clamp(30px, 4vw, 48px);
-      line-height: 1.12;
-      letter-spacing: -1.9px;
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #30c795;
+      box-shadow: 0 0 0 4px rgba(48, 199, 149, .13);
     }
 
-    .hero h2 span {
+    h1 {
+      font-size: clamp(36px, 5.3vw, 60px);
+      line-height: 1.1;
+      letter-spacing: -2.8px;
+      margin: 22px 0 16px;
+      max-width: 730px;
+    }
+
+    .gradient-text {
       color: var(--accent);
-      background: linear-gradient(100deg, #7e86ff, #b07bff);
+      background: linear-gradient(110deg, #6386ff, #a27aff);
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero-copy > p {
-      max-width: 600px;
-      margin: 0;
+    .hero p {
+      max-width: 620px;
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.75;
+      font-size: 16px;
+      line-height: 1.8;
+      margin: 0;
     }
 
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
-
-    .hero-side {
+    .hero-buttons {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-      background:
-        radial-gradient(circle at 90% 10%, rgba(126,134,255,.23), transparent 45%),
-        var(--surface);
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 28px;
     }
 
-    .side-label { color: var(--muted); font-size: 13px; }
-    .side-value { margin-top: 8px; font-size: 27px; font-weight: 800; letter-spacing: -1px; }
-    .side-note { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 13px 19px;
+      font-weight: 800;
+      font-size: 13px;
+      transition: transform .18s, opacity .18s;
+    }
 
-    .status-line { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #c6a24b; }
-    .status-dot.ok { background: #25ae82; box-shadow: 0 0 0 4px rgba(37,174,130,.12); }
-    .status-dot.error { background: #e16a76; }
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 8px 22px rgba(85, 119, 245, .23);
+    }
+
+    .button.secondary {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .section {
+      margin: 34px 0;
+      scroll-margin-top: 20px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 17px;
+    }
+
+    .section-heading h2 {
+      font-size: 22px;
+      letter-spacing: -.8px;
+      margin: 0 0 6px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+      line-height: 1.6;
+    }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
-      margin-bottom: 22px;
     }
 
-    .stat-card { padding: 19px 21px; }
-    .stat-label { color: var(--muted); font-size: 13px; }
-    .stat-number { margin-top: 10px; font-size: 27px; font-weight: 800; letter-spacing: -.8px; }
-    .stat-foot { margin-top: 5px; color: var(--muted); font-size: 12px; }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
-      gap: 20px;
-      align-items: start;
+    .stat {
+      padding: 22px;
+      border-radius: 23px;
+      min-width: 0;
     }
 
-    .panel { padding: 22px; min-width: 0; }
-
-    .panel-head {
+    .stat-label {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .panel-head h3 { margin: 0; font-size: 18px; letter-spacing: -.5px; }
-    .panel-head p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
-
-    .search-row { display: flex; gap: 8px; margin-bottom: 13px; }
-
-    .search-box {
-      display: flex;
-      gap: 9px;
+      gap: 8px;
       align-items: center;
-      min-width: 0;
-      flex: 1;
-      padding: 0 13px;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: var(--surface-strong);
       color: var(--muted);
-    }
-
-    .search-box input {
-      width: 100%;
-      min-width: 0;
-      padding: 12px 0;
-      border: 0;
-      outline: none;
-      color: var(--text);
-      background: transparent;
-    }
-
-    .search-box input:focus-visible { outline: none; }
-    .search-box:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-    select {
-      max-width: 155px;
-      padding: 10px 12px;
-      color: var(--text);
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: var(--surface-strong);
-    }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
-
-    .chip {
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--muted);
-      background: var(--surface-strong);
       font-size: 12px;
-      white-space: nowrap;
+      font-weight: 700;
     }
 
-    .chip.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); font-weight: 750; }
+    .stat-label i {
+      font-size: 18px;
+      color: var(--accent);
+    }
 
-    .trend-list, .article-list { display: flex; flex-direction: column; gap: 9px; }
+    .stat-value {
+      font-size: 31px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-top: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    .stat-note {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .panel {
+      padding: 24px;
+      border-radius: var(--radius);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 19px;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      min-width: 190px;
+      max-width: 400px;
+    }
+
+    .search i {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    .search input {
+      width: 100%;
+      outline: none;
+      padding: 13px 14px 13px 39px;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      border-radius: 14px;
+      color: var(--text);
+    }
+
+    .search input:focus {
+      border-color: var(--accent);
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 10px 13px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .filter.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: transparent;
+    }
+
+    .trend-list {
+      display: grid;
+      gap: 10px;
+    }
 
     .trend-item {
       display: grid;
-      grid-template-columns: 38px minmax(0, 1fr) auto;
+      grid-template-columns: 40px minmax(0, 1fr) auto;
       align-items: center;
+      gap: 13px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      border-radius: 18px;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .trend-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .rank {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .trend-name {
+      font-size: 15px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .trend-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .trend-score {
+      text-align: right;
+      min-width: 76px;
+    }
+
+    .trend-score strong {
+      display: block;
+      font-size: 17px;
+      color: var(--accent);
+    }
+
+    .trend-score span {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .tag.green {
+      background: rgba(21, 155, 120, .11);
+      color: var(--green);
+    }
+
+    .tag.red {
+      background: rgba(223, 91, 101, .1);
+      color: var(--red);
+    }
+
+    .news-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .news-item {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      border-radius: 17px;
+      transition: border-color .2s;
+    }
+
+    .news-item:hover {
+      border-color: var(--accent);
+    }
+
+    .news-title {
+      font-size: 14px;
+      font-weight: 750;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .news-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 10px;
+    }
+
+    .news-open {
+      color: var(--accent);
+      font-weight: 800;
+      margin-left: auto;
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .favorite-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .favorite-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 12px;
       padding: 13px;
       border: 1px solid var(--line);
-      border-radius: 17px;
-      background: var(--surface-strong);
+      background: var(--surface-solid);
+      border-radius: 14px;
     }
 
-    .trend-rank {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      color: var(--accent);
-      background: var(--accent-soft);
-      font-weight: 800;
+    .favorite-item strong {
       font-size: 13px;
+      overflow-wrap: anywhere;
     }
 
-    .trend-name { overflow-wrap: anywhere; font-size: 14px; font-weight: 750; }
-    .trend-meta { margin-top: 5px; color: var(--muted); font-size: 11px; }
-    .trend-count { text-align: right; white-space: nowrap; }
-    .trend-count strong { display: block; font-size: 16px; }
-    .trend-count span { color: var(--muted); font-size: 10px; }
-
-    .article-item {
-      padding: 14px;
+    .small-button {
       border: 1px solid var(--line);
-      border-radius: 17px;
-      background: var(--surface-strong);
-    }
-
-    .article-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 9px; }
-
-    .category-tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 5px 8px;
-      color: var(--accent);
-      background: var(--accent-soft);
-      font-size: 10px;
-      font-weight: 750;
-    }
-
-    .article-source, .article-date { color: var(--muted); font-size: 11px; }
-    .article-title { color: var(--text); font-size: 14px; line-height: 1.55; font-weight: 650; overflow-wrap: anywhere; }
-    .article-title:hover { color: var(--accent); }
-    a { text-decoration: none; }
-
-    .article-bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; }
-
-    .favorite-button {
-      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
       border-radius: 10px;
-      padding: 7px 9px;
-      color: var(--muted);
-      background: transparent;
+      padding: 8px 10px;
       font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
     }
-
-    .favorite-button.active { color: var(--accent); background: var(--accent-soft); }
 
     .empty {
-      padding: 30px 12px;
       text-align: center;
+      padding: 36px 16px;
       color: var(--muted);
-      border: 1px dashed var(--line);
-      border-radius: 17px;
       font-size: 13px;
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
-    .notice {
-      margin-top: 18px;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
+    .empty i {
+      display: block;
+      font-size: 27px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .status {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
       color: var(--muted);
-      background: var(--surface);
       font-size: 12px;
       line-height: 1.7;
+      margin-top: 16px;
+      overflow-wrap: anywhere;
     }
 
-    .notice strong { color: var(--text); }
+    .status i {
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .status.error {
+      color: var(--red);
+    }
+
+    .status.success i {
+      color: var(--green);
+    }
+
+    .skeleton {
+      height: 72px;
+      border-radius: 16px;
+      background: linear-gradient(
+        90deg,
+        var(--line),
+        var(--accent-soft),
+        var(--line)
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite linear;
+    }
+
+    @keyframes shimmer {
+      to { background-position: -200% 0; }
+    }
 
     footer {
-      padding: 0 0 28px;
+      border-top: 1px solid var(--line);
+      padding: 25px 0 40px;
+      margin-top: 45px;
       color: var(--muted);
-      text-align: center;
       font-size: 11px;
       line-height: 1.8;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .toast {
       position: fixed;
       left: 50%;
       bottom: 24px;
-      z-index: 20;
-      max-width: calc(100% - 32px);
-      padding: 12px 17px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      color: var(--text);
-      background: var(--surface-strong);
-      box-shadow: var(--shadow);
-      transform: translate(-50%, 15px);
+      transform: translate(-50%, 20px);
       opacity: 0;
       pointer-events: none;
-      transition: .2s;
+      z-index: 20;
+      background: var(--surface-solid);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 13px 18px;
+      border-radius: 14px;
       font-size: 13px;
+      transition: .2s;
+      max-width: calc(100% - 30px);
+      text-align: center;
     }
 
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-    @media (max-width: 820px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-side { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
-      .layout { grid-template-columns: 1fr; }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
-    @media (max-width: 520px) {
-      .shell { width: calc(100% - 20px); }
-      header { top: 6px; margin-top: 6px; margin-bottom: 17px; padding: 11px; }
-      .brand-mark { width: 38px; height: 38px; }
-      .brand h1 { font-size: 15px; }
-      .brand p { font-size: 10px; }
-      .header-actions { gap: 5px; }
-      .icon-button { width: 37px; height: 37px; }
-      .hero-copy, .hero-side, .panel { padding: 18px; }
-      .hero h2 { font-size: 34px; }
-      .hero-copy > p { font-size: 13px; }
-      .stats { gap: 8px; }
-      .stat-card { padding: 14px 11px; border-radius: 17px; }
-      .stat-label { font-size: 11px; }
-      .stat-number { font-size: 22px; }
-      .stat-foot { font-size: 10px; }
-      .panel-head { align-items: flex-start; }
-      .search-row { flex-wrap: wrap; }
-      .search-box { flex-basis: 100%; }
-      .search-row select { flex: 1; max-width: none; }
-      .trend-item { gap: 9px; padding: 11px; }
-      .trend-count strong { font-size: 14px; }
+    @media (max-width: 760px) {
+      .app {
+        width: calc(100% - 24px);
+      }
+
+      .hero {
+        padding: 32px 23px;
+        border-radius: 25px;
+      }
+
+      h1 {
+        letter-spacing: -1.8px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 17px;
+      }
+
+      .stat-value {
+        font-size: 26px;
+      }
+
+      .two-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+      }
+
+      .topbar {
+        padding: 15px 0;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .brand {
+        font-size: 17px;
+      }
+
+      .brand small {
+        font-size: 10px;
+      }
+
+      .trend-item {
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .rank {
+        width: 32px;
+        height: 32px;
+      }
+
+      .trend-score {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+      }
+
+      .trend-score strong,
+      .trend-score span {
+        display: inline;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="shell">
-    <header class="glass">
-      <div class="brand">
-        <div class="brand-mark"><i class="fi fi-rr-chart-histogram" aria-hidden="true"></i></div>
-        <div>
-          <h1>TrendScope</h1>
-          <p>요즘 유행 분석 연구소</p>
-        </div>
-      </div>
+  <div class="app">
+    <header class="topbar">
+      <a href="#" class="brand" aria-label="TrendScope 홈">
+        <span class="brand-icon">
+          <i class="fi fi-rr-chart-histogram"></i>
+        </span>
+        <span>
+          TrendScope
+          <small>요즘 유행 분석 연구소</small>
+        </span>
+      </a>
 
-      <div class="header-actions">
-        <button class="icon-button" id="themeButton" type="button" aria-label="다크 모드 전환" title="테마 전환">
-          <i class="fi fi-rr-moon" aria-hidden="true"></i>
+      <div class="top-actions">
+        <button
+          class="icon-button"
+          id="refreshButton"
+          title="새로고침"
+          aria-label="데이터 새로고침"
+        >
+          <i class="fi fi-rr-refresh"></i>
         </button>
-        <button class="icon-button" id="refreshButton" type="button" aria-label="데이터 새로고침" title="새로고침">
-          <i class="fi fi-rr-refresh" aria-hidden="true"></i>
+
+        <button
+          class="icon-button"
+          id="themeButton"
+          title="테마 변경"
+          aria-label="다크 모드 전환"
+        >
+          <i class="fi fi-rr-moon"></i>
         </button>
       </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-copy glass">
-          <div class="eyebrow"><i class="fi fi-rr-sparkles" aria-hidden="true"></i> TREND INTELLIGENCE</div>
-          <h2>다음 유행을<br><span>먼저 발견하세요.</span></h2>
-          <p>
-            뉴스에 등장하는 상품과 키워드를 모아 지금 주목받는 물건을 살펴보세요.
-            데이터는 자동으로 수집되며, 언제든 최신 저장 데이터를 확인할 수 있습니다.
-          </p>
-          <div class="hero-actions">
-            <button class="primary-button" id="exploreButton" type="button">
-              <i class="fi fi-rr-search" aria-hidden="true"></i> 유행 탐색하기
-            </button>
-            <button class="secondary-button" id="favoritesButton" type="button">
-              <i class="fi fi-rr-bookmark" aria-hidden="true"></i> 즐겨찾기 보기
-            </button>
-          </div>
+      <section class="hero glass">
+        <div class="eyebrow">
+          <span class="live-dot"></span>
+          TREND INTELLIGENCE
         </div>
 
-        <aside class="hero-side glass">
+        <h1>
+          다음 유행을<br>
+          <span class="gradient-text">먼저 발견하세요.</span>
+        </h1>
+
+        <p>
+          뉴스에 등장하는 상품과 키워드를 모아 지금 주목받는 물건을 살펴보세요.
+          뉴스 피드를 자동으로 수집하고, 키워드별 언급량을 분석합니다.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="button primary" id="exploreButton">
+            <i class="fi fi-rr-chart-line-up"></i>
+            유행 탐색하기
+          </button>
+
+          <button class="button secondary" id="favoritesButton">
+            <i class="fi fi-rr-bookmark"></i>
+            즐겨찾기 보기
+          </button>
+        </div>
+
+        <div class="status" id="statusMessage" role="status" aria-live="polite">
+          <i class="fi fi-rr-info"></i>
+          <span>최신 뉴스 데이터를 불러오는 중입니다.</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
           <div>
-            <div class="side-label">마지막 데이터 갱신</div>
-            <div class="side-value" id="lastUpdated">확인 중</div>
-            <div class="side-note" id="lastUpdatedNote">저장된 데이터의 갱신 시각입니다.</div>
+            <h2>수집 현황</h2>
+            <p>이번 데이터 수집 요청의 처리 결과입니다.</p>
           </div>
-          <div class="status-line">
-            <span class="status-dot" id="statusDot"></span>
-            <span id="statusText" role="status" aria-live="polite">서버에 연결하고 있습니다.</span>
-          </div>
-        </aside>
+          <span class="tag" id="updateBadge">확인 중</span>
+        </div>
+
+        <div class="stats">
+          <article class="stat glass">
+            <div class="stat-label">
+              수집한 기사
+              <i class="fi fi-rr-document"></i>
+            </div>
+            <div class="stat-value" id="articleCount">—</div>
+            <div class="stat-note">중복 제거 후 기사 수</div>
+          </article>
+
+          <article class="stat glass">
+            <div class="stat-label">
+              관측 키워드
+              <i class="fi fi-rr-search"></i>
+            </div>
+            <div class="stat-value" id="keywordCount">—</div>
+            <div class="stat-note">기사 제목에서 발견된 키워드</div>
+          </article>
+
+          <article class="stat glass">
+            <div class="stat-label">
+              정상 피드
+              <i class="fi fi-rr-check-circle"></i>
+            </div>
+            <div class="stat-value" id="feedCount">—</div>
+            <div class="stat-note" id="feedNote">뉴스 피드 연결 상태</div>
+          </article>
+
+          <article class="stat glass">
+            <div class="stat-label">
+              즐겨찾기
+              <i class="fi fi-rr-bookmark"></i>
+            </div>
+            <div class="stat-value" id="favoriteCount">0</div>
+            <div class="stat-note">이 브라우저에 저장됨</div>
+          </article>
+        </div>
       </section>
 
-      <section class="stats" aria-label="데이터 요약">
-        <div class="stat-card glass">
-          <div class="stat-label">수집한 기사</div>
-          <div class="stat-number" id="articleStat">—</div>
-          <div class="stat-foot">RSS에서 수집한 기사</div>
+      <section class="section" id="trendsSection">
+        <div class="section-heading">
+          <div>
+            <h2>지금 주목받는 키워드</h2>
+            <p>수집한 기사 제목에서 키워드가 얼마나 발견됐는지 보여줍니다.</p>
+          </div>
         </div>
-        <div class="stat-card glass">
-          <div class="stat-label">관측 키워드</div>
-          <div class="stat-number" id="keywordStat">—</div>
-          <div class="stat-foot">기사 제목과 일치한 키워드</div>
-        </div>
-        <div class="stat-card glass">
-          <div class="stat-label">정상 피드</div>
-          <div class="stat-number" id="feedStat">—</div>
-          <div class="stat-foot">최근 수집 결과 기준</div>
-        </div>
-      </section>
 
-      <section class="layout" id="dashboard">
         <div class="panel glass">
-          <div class="panel-head">
-            <div>
-              <h3><i class="fi fi-rr-chart-line-up" aria-hidden="true"></i> 유행 키워드</h3>
-              <p>수집된 기사 제목에서 발견한 키워드입니다.</p>
+          <div class="toolbar">
+            <label class="search">
+              <i class="fi fi-rr-search"></i>
+              <input
+                id="trendSearch"
+                type="search"
+                placeholder="키워드 검색..."
+                aria-label="유행 키워드 검색"
+              >
+            </label>
+
+            <div class="filter-buttons">
+              <button class="filter active" data-filter="all">전체</button>
+              <button class="filter" data-filter="high">높은 관심</button>
+              <button class="filter" data-filter="recent">최근 기사</button>
             </div>
           </div>
 
-          <div class="search-row">
-            <label class="search-box">
-              <i class="fi fi-rr-search" aria-hidden="true"></i>
-              <input id="searchInput" type="search" placeholder="키워드를 검색하세요" autocomplete="off" aria-label="키워드 검색">
-            </label>
-            <select id="categorySelect" aria-label="카테고리 선택">
-              <option value="전체">전체 카테고리</option>
-              <option value="촉감·완구">촉감·완구</option>
-              <option value="캐릭터·굿즈">캐릭터·굿즈</option>
-              <option value="문구·생활">문구·생활</option>
-              <option value="디지털·데스크">디지털·데스크</option>
-              <option value="신제품">신제품</option>
-            </select>
-          </div>
-
-          <div class="chips" id="categoryChips" aria-label="빠른 카테고리 필터">
-            <button class="chip active" type="button" data-category="전체">전체</button>
-            <button class="chip" type="button" data-category="촉감·완구">촉감·완구</button>
-            <button class="chip" type="button" data-category="캐릭터·굿즈">캐릭터·굿즈</button>
-            <button class="chip" type="button" data-category="문구·생활">문구·생활</button>
-            <button class="chip" type="button" data-category="디지털·데스크">디지털·데스크</button>
-            <button class="chip" type="button" data-category="신제품">신제품</button>
-          </div>
-
-          <div class="trend-list" id="trendList" aria-live="polite">
-            <div class="empty">데이터를 불러오고 있습니다.</div>
-          </div>
-        </div>
-
-        <div class="panel glass" id="articlesPanel">
-          <div class="panel-head">
-            <div>
-              <h3><i class="fi fi-rr-newspaper" aria-hidden="true"></i> 관련 뉴스</h3>
-              <p>키워드와 연결된 최근 수집 기사입니다.</p>
-            </div>
-            <button class="secondary-button" id="allArticlesButton" type="button">전체 보기</button>
-          </div>
-
-          <div class="search-row">
-            <label class="search-box">
-              <i class="fi fi-rr-search" aria-hidden="true"></i>
-              <input id="articleSearch" type="search" placeholder="기사 제목 또는 출처" autocomplete="off" aria-label="뉴스 검색">
-            </label>
-          </div>
-
-          <div class="article-list" id="articleList" aria-live="polite">
-            <div class="empty">기사를 불러오고 있습니다.</div>
+          <div class="trend-list" id="trendList">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
           </div>
         </div>
       </section>
 
-      <div class="notice">
-        <strong>데이터 안내</strong><br>
-        이 서비스는 Google 뉴스 RSS에서 수집한 기사 제목을 분석합니다.
-        키워드 수는 기사 언급 횟수에 기반하며, 실제 검색량·판매량·인기도를 직접 측정하지 않습니다.
-        기사 내용과 제품 정보는 원문에서 확인해 주세요.
+      <div class="two-columns">
+        <section class="section" id="newsSection">
+          <div class="section-heading">
+            <div>
+              <h2>관련 뉴스</h2>
+              <p>수집된 기사의 원문을 확인하세요.</p>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <label class="search" style="max-width:none;margin-bottom:16px">
+              <i class="fi fi-rr-search"></i>
+              <input
+                id="newsSearch"
+                type="search"
+                placeholder="뉴스 제목 검색..."
+                aria-label="뉴스 검색"
+              >
+            </label>
+
+            <div class="news-list" id="newsList">
+              <div class="skeleton"></div>
+              <div class="skeleton"></div>
+            </div>
+
+            <button
+              class="button secondary"
+              id="moreNewsButton"
+              style="width:100%;margin-top:14px;display:none"
+            >
+              더 보기
+            </button>
+          </div>
+        </section>
+
+        <section class="section" id="favoritesSection">
+          <div class="section-heading">
+            <div>
+              <h2>즐겨찾기</h2>
+              <p>관심 있는 키워드를 따로 모아보세요.</p>
+            </div>
+          </div>
+
+          <div class="panel glass">
+            <div class="favorite-list" id="favoriteList"></div>
+          </div>
+
+          <div class="status">
+            <i class="fi fi-rr-shield-check"></i>
+            <span>
+              즐겨찾기는 현재 브라우저에 저장됩니다.
+              브라우저 데이터를 삭제하면 함께 사라질 수 있습니다.
+            </span>
+          </div>
+        </section>
       </div>
     </main>
 
     <footer>
-      TrendScope · 뉴스 기반 유행 관측 서비스<br>
-      기사 원문과 출처는 각 언론사 및 게시처에 있습니다.
+      <div>
+        <strong>TrendScope</strong><br>
+        뉴스 기반 유행 관측 도구
+      </div>
+      <div>
+        뉴스 데이터는 외부 RSS 제공처에서 가져옵니다.<br>
+        키워드 점수는 자체 계산값이며 실제 판매량이나 시장점유율을 뜻하지 않습니다.
+      </div>
     </footer>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
+    "use strict";
+
     const $ = (selector) => document.querySelector(selector);
 
     const state = {
       trends: [],
       articles: [],
-      feeds: [],
-      updatedAt: null,
-      selectedCategory: "전체",
-      favoritesOnly: false,
-      allArticles: false,
-      loading: false
+      filter: "all",
+      favorites: loadFavorites(),
+      newsLimit: 8,
+      loading: false,
+      lastUpdated: null
     };
 
-    const FAVORITES_KEY = "trendscope:favorites";
-    const THEME_KEY = "trendscope:theme";
-
-    function readFavorites() {
+    function loadFavorites() {
       try {
-        const value = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+        const value = JSON.parse(
+          localStorage.getItem("trendscope-favorites") || "[]"
+        );
+
         return Array.isArray(value) ? value : [];
       } catch {
         return [];
       }
     }
 
-    function saveFavorites(value) {
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(value));
+    function saveFavorites() {
+      try {
+        localStorage.setItem(
+          "trendscope-favorites",
+          JSON.stringify(state.favorites)
+        );
+      } catch {
+        showToast("즐겨찾기를 저장하지 못했습니다.");
+      }
+
+      $("#favoriteCount").textContent = state.favorites.length;
     }
 
     function escapeHTML(value) {
@@ -628,353 +1019,492 @@
       })[char]);
     }
 
-    function safeArticleUrl(value) {
+    function safeUrl(value) {
       try {
         const url = new URL(value);
-        return ["http:", "https:"].includes(url.protocol) ? url.href : "#";
-      } catch {
-        return "#";
+
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          return url.href;
+        }
+      } catch {}
+
+      return "";
+    }
+
+    function getErrorMessage(error) {
+      if (error instanceof Error) {
+        return error.message || "요청 처리 중 오류가 발생했습니다.";
       }
+
+      if (typeof error === "string") {
+        return error;
+      }
+
+      if (error && typeof error === "object") {
+        if (typeof error.error === "string") return error.error;
+        if (typeof error.message === "string") return error.message;
+
+        try {
+          return JSON.stringify(error);
+        } catch {}
+      }
+
+      return "원인을 확인할 수 없는 오류입니다.";
+    }
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(showToast.timer);
+
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    function setStatus(message, type = "normal") {
+      const box = $("#statusMessage");
+      const icon = type === "error"
+        ? "fi-rr-cross-circle"
+        : type === "success"
+          ? "fi-rr-check-circle"
+          : "fi-rr-info";
+
+      box.className = "status" + (type === "error" ? " error" : type === "success" ? " success" : "");
+
+      box.innerHTML =
+        `<i class="fi ${icon}"></i><span>${escapeHTML(message)}</span>`;
     }
 
     function formatDate(value) {
-      if (!value) return "시각 정보 없음";
+      if (!value) return "날짜 정보 없음";
 
       const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return "시각 정보 없음";
 
-      return new Intl.DateTimeFormat("ko-KR", {
-        month: "numeric",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }).format(date);
-    }
-
-    function formatFullDate(value) {
-      if (!value) return "데이터 없음";
-
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return "데이터 없음";
+      if (Number.isNaN(date.getTime())) return "날짜 정보 없음";
 
       return new Intl.DateTimeFormat("ko-KR", {
         year: "numeric",
-        month: "long",
-        day: "numeric",
+        month: "2-digit",
+        day: "2-digit",
         hour: "2-digit",
         minute: "2-digit"
       }).format(date);
     }
 
-    let toastTimer;
+    function formatRelativeDate(value) {
+      if (!value) return "날짜 미확인";
 
-    function toast(message) {
-      const el = $("#toast");
-      el.textContent = message;
-      el.classList.add("show");
+      const time = Date.parse(value);
 
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+      if (!Number.isFinite(time)) return "날짜 미확인";
+
+      const minutes = Math.floor((Date.now() - time) / 60000);
+
+      if (minutes < 0) return "방금 전";
+      if (minutes < 1) return "방금 전";
+      if (minutes < 60) return `${minutes}분 전`;
+
+      const hours = Math.floor(minutes / 60);
+
+      if (hours < 24) return `${hours}시간 전`;
+
+      const days = Math.floor(hours / 24);
+
+      return `${days}일 전`;
     }
 
-    function setStatus(type, message) {
-      $("#statusDot").className = "status-dot" + (type ? " " + type : "");
-      $("#statusText").textContent = message;
-    }
-
-    async function fetchJSON(url) {
+    async function fetchJson(url) {
       const response = await fetch(url, {
-        cache: "no-store",
-        headers: { "Accept": "application/json" }
+        method: "GET",
+        headers: { "Accept": "application/json" },
+        cache: "no-store"
       });
 
-      let body;
+      const text = await response.text();
+
+      let data;
 
       try {
-        body = await response.json();
+        data = JSON.parse(text);
       } catch {
-        throw new Error("서버 응답을 읽을 수 없습니다.");
+        throw new Error(
+          `서버가 JSON이 아닌 응답을 반환했습니다. HTTP ${response.status}`
+        );
       }
 
-      if (!response.ok) {
-        throw new Error(body.error || "서버 요청에 실패했습니다.");
+      if (!response.ok || data.ok === false) {
+        throw new Error(
+          getErrorMessage(data.error || data.message || `HTTP ${response.status}`)
+        );
       }
 
-      return body;
+      return data;
     }
 
-    async function refreshData(showMessage = false) {
+    async function loadData({ quiet = false } = {}) {
       if (state.loading) return;
 
       state.loading = true;
+
       $("#refreshButton").disabled = true;
-      setStatus("", "데이터를 불러오고 있습니다.");
+      $("#refreshButton").style.opacity = ".5";
+
+      if (!quiet) {
+        setStatus("최신 뉴스 피드를 수집하고 있습니다.");
+      }
 
       try {
-        const [trendData, articleData] = await Promise.all([
-          fetchJSON("/api/trends"),
-          fetchJSON("/api/articles")
-        ]);
+        const data = await fetchJson("/api/trends");
 
-        state.trends = Array.isArray(trendData.trends) ? trendData.trends : [];
-        state.articles = Array.isArray(articleData.articles) ? articleData.articles : [];
-        state.feeds = Array.isArray(trendData.feeds) ? trendData.feeds : [];
-        state.updatedAt = trendData.updatedAt || articleData.updatedAt || null;
+        state.trends = Array.isArray(data.trends) ? data.trends : [];
+        state.articles = Array.isArray(data.articles) ? data.articles : [];
+        state.lastUpdated = data.updatedAt || new Date().toISOString();
+        state.newsLimit = 8;
 
-        renderStats();
+        renderStats(data);
         renderTrends();
-        renderArticles();
+        renderNews();
+        renderFavorites();
 
-        const successful = state.feeds.filter((feed) => feed.ok).length;
-        const failed = state.feeds.length - successful;
+        $("#updateBadge").textContent = "수집 완료";
 
-        if (!state.articles.length) {
-          setStatus("error", "수집된 데이터가 없습니다.");
-        } else if (failed > 0) {
-          setStatus("", "일부 뉴스 피드에 문제가 있습니다.");
+        const time = formatDate(state.lastUpdated);
+
+        if (data.message) {
+          setStatus(`${data.message} 마지막 수집 시각: ${time}`, "error");
         } else {
-          setStatus("ok", "데이터를 정상적으로 불러왔습니다.");
+          setStatus(`데이터 갱신 완료 · ${time}`, "success");
         }
 
-        if (showMessage) toast("데이터를 새로고침했습니다.");
+        if (quiet) {
+          // 자동 갱신 시에는 별도의 팝업을 띄우지 않습니다.
+        }
       } catch (error) {
-        setStatus("error", "데이터를 불러오지 못했습니다.");
-        $("#trendList").innerHTML =
-          '<div class="empty">데이터를 불러오지 못했습니다.<br>' +
-          escapeHTML(error.message) +
-          '<br><br>환경 변수와 자동 수집 기록을 확인해 주세요.</div>';
+        const message = getErrorMessage(error);
 
-        $("#articleList").innerHTML =
-          '<div class="empty">뉴스 목록을 불러올 수 없습니다.</div>';
+        setStatus(`데이터를 불러오지 못했습니다. ${message}`, "error");
+        $("#updateBadge").textContent = "수집 실패";
 
-        if (showMessage) toast(error.message || "새로고침에 실패했습니다.");
+        $("#trendList").innerHTML = `
+          <div class="empty">
+            <i class="fi fi-rr-triangle-warning"></i>
+            <strong>유행 데이터를 불러오지 못했습니다.</strong><br>
+            ${escapeHTML(message)}<br><br>
+            잠시 후 다시 시도하거나 Vercel의 Function Logs를 확인하세요.
+          </div>
+        `;
+
+        $("#newsList").innerHTML = `
+          <div class="empty">
+            <i class="fi fi-rr-document"></i>
+            뉴스 목록을 불러오지 못했습니다.
+          </div>
+        `;
+
+        if (!quiet) {
+          showToast("뉴스 수집에 실패했습니다.");
+        }
       } finally {
         state.loading = false;
         $("#refreshButton").disabled = false;
+        $("#refreshButton").style.opacity = "1";
       }
     }
 
-    function renderStats() {
-      $("#articleStat").textContent = state.articles.length.toLocaleString("ko-KR");
-      $("#keywordStat").textContent = state.trends.length.toLocaleString("ko-KR");
+    function renderStats(data = {}) {
+      $("#articleCount").textContent = Number(data.articleCount || 0).toLocaleString();
+      $("#keywordCount").textContent = Number(data.keywordCount || 0).toLocaleString();
 
-      const successful = state.feeds.filter((feed) => feed.ok).length;
-      $("#feedStat").textContent = state.feeds.length
-        ? `${successful}/${state.feeds.length}`
-        : "—";
+      $("#feedCount").textContent =
+        `${Number(data.successfulFeeds || 0)}/${Number(data.totalFeeds || 0)}`;
 
-      $("#lastUpdated").textContent = state.updatedAt
-        ? formatDate(state.updatedAt)
-        : "데이터 없음";
+      $("#feedNote").textContent =
+        Number(data.failedFeeds || 0) > 0
+          ? `실패한 피드 ${data.failedFeeds}개`
+          : "뉴스 피드 연결 상태";
 
-      $("#lastUpdatedNote").textContent = state.updatedAt
-        ? formatFullDate(state.updatedAt)
-        : "아직 자동 수집된 데이터가 없습니다.";
+      $("#favoriteCount").textContent = state.favorites.length;
     }
 
-    function getFilteredTrends() {
-      const query = $("#searchInput").value.trim().toLowerCase();
-      const category = state.selectedCategory;
+    function isFavorite(keyword) {
+      return state.favorites.includes(keyword);
+    }
 
-      return state.trends.filter((item) => {
-        const matchesQuery =
-          !query ||
-          item.name.toLowerCase().includes(query) ||
-          item.category.toLowerCase().includes(query);
+    function toggleFavorite(keyword) {
+      if (isFavorite(keyword)) {
+        state.favorites = state.favorites.filter((item) => item !== keyword);
+        showToast("즐겨찾기에서 제거했습니다.");
+      } else {
+        state.favorites.unshift(keyword);
+        showToast("즐겨찾기에 추가했습니다.");
+      }
 
-        const matchesCategory =
-          category === "전체" || item.category === category;
-
-        return matchesQuery && matchesCategory;
-      });
+      saveFavorites();
+      renderTrends();
+      renderFavorites();
     }
 
     function renderTrends() {
-      const list = $("#trendList");
-      const trends = getFilteredTrends();
+      const query = $("#trendSearch").value.trim().toLocaleLowerCase("ko");
 
-      if (!trends.length) {
-        list.innerHTML =
-          '<div class="empty">조건에 맞는 키워드가 없습니다.<br>다른 검색어나 카테고리를 선택해 주세요.</div>';
+      let items = state.trends.filter((item) =>
+        String(item.keyword || "").toLocaleLowerCase("ko").includes(query)
+      );
+
+      if (state.filter === "high") {
+        items = items.filter((item) => item.level === "높은 관심");
+      } else if (state.filter === "recent") {
+        items = items.filter((item) => Number(item.recentCount || 0) > 0);
+      }
+
+      if (!items.length) {
+        $("#trendList").innerHTML = `
+          <div class="empty">
+            <i class="fi fi-rr-search"></i>
+            표시할 키워드가 없습니다.<br>
+            다른 검색어를 입력하거나 새로고침해 보세요.
+          </div>
+        `;
         return;
       }
 
-      list.innerHTML = trends.map((item, index) => `
-        <article class="trend-item">
-          <div class="trend-rank">${String(index + 1).padStart(2, "0")}</div>
-          <div>
-            <div class="trend-name">${escapeHTML(item.name)}</div>
-            <div class="trend-meta">${escapeHTML(item.category)} · 기사 제목 언급 수</div>
-          </div>
-          <div class="trend-count">
-            <strong>${Number(item.count || 0).toLocaleString("ko-KR")}</strong>
-            <span>건</span>
-          </div>
-        </article>
-      `).join("");
-    }
+      $("#trendList").innerHTML = items.map((item) => {
+        const favorite = isFavorite(item.keyword);
 
-    function getFilteredArticles() {
-      const query = $("#articleSearch").value.trim().toLowerCase();
-      const category = state.selectedCategory;
-      const favorites = readFavorites();
-
-      return state.articles.filter((article) => {
-        const matchesQuery =
-          !query ||
-          article.title.toLowerCase().includes(query) ||
-          String(article.source || "").toLowerCase().includes(query);
-
-        const matchesCategory =
-          category === "전체" || article.category === category;
-
-        const matchesFavorite =
-          !state.favoritesOnly || favorites.includes(article.id);
-
-        return matchesQuery && matchesCategory && matchesFavorite;
-      });
-    }
-
-    function renderArticles() {
-      const list = $("#articleList");
-      const articles = getFilteredArticles();
-      const favorites = readFavorites();
-      const shown = state.allArticles ? articles : articles.slice(0, 8);
-
-      $("#allArticlesButton").textContent = state.allArticles ? "접기" : "전체 보기";
-
-      if (!shown.length) {
-        list.innerHTML = state.favoritesOnly
-          ? '<div class="empty">즐겨찾기한 기사가 없습니다.</div>'
-          : '<div class="empty">조건에 맞는 기사가 없습니다.<br>다른 검색어나 카테고리를 선택해 주세요.</div>';
-        return;
-      }
-
-      list.innerHTML = shown.map((article) => {
-        const isFavorite = favorites.includes(article.id);
-        const url = safeArticleUrl(article.link);
+        const tagClass = item.level === "높은 관심"
+          ? "tag red"
+          : item.level === "관심 증가"
+            ? "tag green"
+            : "tag";
 
         return `
-          <article class="article-item">
-            <div class="article-top">
-              <span class="category-tag">${escapeHTML(article.category || "기타")}</span>
-              <span class="article-date">${escapeHTML(formatDate(article.publishedAt))}</span>
+          <article class="trend-item">
+            <div class="rank">${escapeHTML(item.rank)}</div>
+
+            <div>
+              <div class="trend-name">${escapeHTML(item.keyword)}</div>
+
+              <div class="trend-meta">
+                <span class="${tagClass}">${escapeHTML(item.level)}</span>
+                <span>기사 ${Number(item.count || 0)}건</span>
+                <span>최근 7일 ${Number(item.recentCount || 0)}건</span>
+              </div>
             </div>
-            <a class="article-title" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">
-              ${escapeHTML(article.title)}
-            </a>
-            <div class="article-bottom">
-              <span class="article-source">${escapeHTML(article.source || "뉴스 출처")}</span>
+
+            <div class="trend-score">
+              <strong>${Number(item.score || 0)}</strong>
               <button
-                class="favorite-button ${isFavorite ? "active" : ""}"
-                type="button"
-                data-favorite="${escapeHTML(article.id)}"
-                aria-pressed="${isFavorite}"
-              >${isFavorite ? "★ 저장됨" : "☆ 저장"}</button>
+                class="small-button"
+                data-favorite="${escapeHTML(item.keyword)}"
+                aria-label="${favorite ? "즐겨찾기 제거" : "즐겨찾기 추가"}"
+              >${favorite ? "★ 저장됨" : "☆ 저장"}</button>
             </div>
           </article>
         `;
       }).join("");
     }
 
-    function selectCategory(category) {
-      state.selectedCategory = category;
-      $("#categorySelect").value = category;
+    function renderNews() {
+      const query = $("#newsSearch").value.trim().toLocaleLowerCase("ko");
 
-      document.querySelectorAll("[data-category]").forEach((button) => {
-        button.classList.toggle("active", button.dataset.category === category);
+      const filtered = state.articles.filter((article) => {
+        const combined =
+          `${article.title || ""} ${article.source || ""} ${article.query || ""}`
+            .toLocaleLowerCase("ko");
+
+        return combined.includes(query);
       });
 
-      renderTrends();
-      renderArticles();
+      const shown = filtered.slice(0, state.newsLimit);
+
+      if (!shown.length) {
+        $("#newsList").innerHTML = `
+          <div class="empty">
+            <i class="fi fi-rr-document"></i>
+            표시할 뉴스가 없습니다.
+          </div>
+        `;
+        $("#moreNewsButton").style.display = "none";
+        return;
+      }
+
+      $("#newsList").innerHTML = shown.map((article) => {
+        const link = safeUrl(article.link);
+
+        return `
+          <article class="news-item">
+            <div class="news-title">${escapeHTML(article.title)}</div>
+
+            <div class="news-meta">
+              <span>${escapeHTML(article.source || "뉴스")}</span>
+              <span>·</span>
+              <span>${escapeHTML(formatRelativeDate(article.publishedAt))}</span>
+
+              ${link ? `
+                <a
+                  class="news-open"
+                  href="${escapeHTML(link)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >원문 보기 ↗</a>
+              ` : ""}
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      $("#moreNewsButton").style.display =
+        filtered.length > state.newsLimit ? "inline-flex" : "none";
     }
 
-    $("#categorySelect").addEventListener("change", (event) => {
-      selectCategory(event.target.value);
-    });
+    function renderFavorites() {
+      const container = $("#favoriteList");
 
-    $("#categoryChips").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-category]");
-      if (button) selectCategory(button.dataset.category);
-    });
+      $("#favoriteCount").textContent = state.favorites.length;
 
-    $("#searchInput").addEventListener("input", renderTrends);
-    $("#searchInput").addEventListener("input", renderArticles);
-    $("#articleSearch").addEventListener("input", renderArticles);
+      if (!state.favorites.length) {
+        container.innerHTML = `
+          <div class="empty">
+            <i class="fi fi-rr-bookmark"></i>
+            아직 저장한 키워드가 없습니다.<br>
+            유행 키워드 옆의 ☆ 저장 버튼을 눌러보세요.
+          </div>
+        `;
+        return;
+      }
 
-    $("#articleList").addEventListener("click", (event) => {
+      container.innerHTML = state.favorites.map((keyword) => {
+        const trend = state.trends.find((item) => item.keyword === keyword);
+
+        return `
+          <div class="favorite-item">
+            <div>
+              <strong>${escapeHTML(keyword)}</strong>
+              <div class="trend-meta">
+                ${trend
+                  ? `기사 ${Number(trend.count || 0)}건 · 점수 ${Number(trend.score || 0)}`
+                  : "현재 수집 데이터에서 발견되지 않음"}
+              </div>
+            </div>
+
+            <button
+              class="small-button"
+              data-remove-favorite="${escapeHTML(keyword)}"
+            >삭제</button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    $("#trendList").addEventListener("click", (event) => {
       const button = event.target.closest("[data-favorite]");
-      if (!button) return;
 
-      const id = button.dataset.favorite;
-      const favorites = readFavorites();
-      const exists = favorites.includes(id);
-
-      const next = exists
-        ? favorites.filter((item) => item !== id)
-        : [...favorites, id];
-
-      saveFavorites(next);
-      renderArticles();
-      toast(exists ? "즐겨찾기에서 삭제했습니다." : "즐겨찾기에 저장했습니다.");
+      if (button) {
+        toggleFavorite(button.dataset.favorite);
+      }
     });
 
-    $("#themeButton").addEventListener("click", () => {
-      const dark = document.body.classList.toggle("dark");
-      localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
+    $("#favoriteList").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-remove-favorite]");
 
-      $("#themeButton").innerHTML = dark
-        ? '<i class="fi fi-rr-sun" aria-hidden="true"></i>'
-        : '<i class="fi fi-rr-moon" aria-hidden="true"></i>';
-
-      $("#themeButton").setAttribute(
-        "aria-label",
-        dark ? "라이트 모드 전환" : "다크 모드 전환"
-      );
+      if (button) {
+        toggleFavorite(button.dataset.removeFavorite);
+      }
     });
 
-    $("#refreshButton").addEventListener("click", () => refreshData(true));
+    $("#trendSearch").addEventListener("input", renderTrends);
+    $("#newsSearch").addEventListener("input", () => {
+      state.newsLimit = 8;
+      renderNews();
+    });
+
+    document.querySelectorAll("[data-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filter;
+
+        document.querySelectorAll("[data-filter]").forEach((item) => {
+          item.classList.toggle("active", item === button);
+        });
+
+        renderTrends();
+      });
+    });
+
+    $("#refreshButton").addEventListener("click", () => {
+      loadData();
+    });
 
     $("#exploreButton").addEventListener("click", () => {
-      $("#dashboard").scrollIntoView({ behavior: "smooth", block: "start" });
-      $("#searchInput").focus({ preventScroll: true });
+      $("#trendsSection").scrollIntoView({ behavior: "smooth" });
     });
 
     $("#favoritesButton").addEventListener("click", () => {
-      state.favoritesOnly = !state.favoritesOnly;
-      $("#favoritesButton").innerHTML = state.favoritesOnly
-        ? '<i class="fi fi-rr-list" aria-hidden="true"></i> 전체 기사 보기'
-        : '<i class="fi fi-rr-bookmark" aria-hidden="true"></i> 즐겨찾기 보기';
-
-      renderArticles();
-      $("#articlesPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+      $("#favoritesSection").scrollIntoView({ behavior: "smooth" });
     });
 
-    $("#allArticlesButton").addEventListener("click", () => {
-      state.allArticles = !state.allArticles;
-      renderArticles();
+    $("#moreNewsButton").addEventListener("click", () => {
+      state.newsLimit += 8;
+      renderNews();
     });
 
-    function initializeTheme() {
-      const saved = localStorage.getItem(THEME_KEY);
-      const dark = saved === "dark";
+    function applyTheme(theme) {
+      document.body.classList.toggle("dark", theme === "dark");
 
-      document.body.classList.toggle("dark", dark);
-      $("#themeButton").innerHTML = dark
-        ? '<i class="fi fi-rr-sun" aria-hidden="true"></i>'
-        : '<i class="fi fi-rr-moon" aria-hidden="true"></i>';
+      $("#themeButton").innerHTML = theme === "dark"
+        ? '<i class="fi fi-rr-sun"></i>'
+        : '<i class="fi fi-rr-moon"></i>';
+
       $("#themeButton").setAttribute(
         "aria-label",
-        dark ? "라이트 모드 전환" : "다크 모드 전환"
+        theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"
       );
+
+      try {
+        localStorage.setItem("trendscope-theme", theme);
+      } catch {}
     }
 
-    initializeTheme();
-    refreshData();
+    $("#themeButton").addEventListener("click", () => {
+      const next = document.body.classList.contains("dark")
+        ? "light"
+        : "dark";
 
-    // 화면에 표시할 저장 데이터를 60초마다 다시 확인합니다.
-    // RSS 자체를 60초마다 수집하는 것은 아닙니다.
-    setInterval(() => refreshData(false), 60000);
+      applyTheme(next);
+    });
+
+    try {
+      const savedTheme = localStorage.getItem("trendscope-theme");
+
+      if (savedTheme === "dark" || savedTheme === "light") {
+        applyTheme(savedTheme);
+      }
+    } catch {}
+
+    // 첫 접속 시 데이터 수집
+    loadData();
+
+    // 3분마다 자동 갱신
+    setInterval(() => {
+      if (!document.hidden) {
+        loadData({ quiet: true });
+      }
+    }, 3 * 60 * 1000);
+
+    // 브라우저 탭으로 돌아왔을 때 오래된 데이터 갱신
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) {
+        const age = state.lastUpdated
+          ? Date.now() - Date.parse(state.lastUpdated)
+          : Infinity;
+
+        if (age > 3 * 60 * 1000) {
+          loadData({ quiet: true });
+        }
+      }
+    });
   </script>
 </body>
-  </html>
+                </html>
